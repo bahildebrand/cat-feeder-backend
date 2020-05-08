@@ -1,4 +1,4 @@
-package helloworld;
+package lambdas;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,17 +10,22 @@ import java.util.stream.Collectors;
 import java.nio.ByteBuffer;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.iotdata.AWSIotDataClientBuilder;
 import com.amazonaws.services.iotdata.AWSIotData;
 import com.amazonaws.services.iotdata.model.PublishRequest;
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import utilities.GatewayResponse;
+
 /**
  * Handler for requests to Lambda function.
  */
 public class App implements RequestHandler<Object, Object> {
+    private static final Logger logger = LoggerFactory.getLogger(App.class);
 
     public Object handleRequest(final Object input, final Context context) {
         Map<String, String> headers = new HashMap<>();
@@ -28,7 +33,7 @@ public class App implements RequestHandler<Object, Object> {
         headers.put("X-Custom-Header", "application/json");
 
         AWSIotData iotData = AWSIotDataClientBuilder.standard()
-                .withEndpointConfiguration(new EndpointConfiguration("ao28sb0mkuqhc-ats.iot.us-east-1.amazonaws.com", 
+                .withEndpointConfiguration(new EndpointConfiguration("ao28sb0mkuqhc-ats.iot.us-east-1.amazonaws.com",
                         "us-east-1"))
                 .build();
 
@@ -41,8 +46,7 @@ public class App implements RequestHandler<Object, Object> {
                                                             .withPayload(payloadBB);
             iotData.publish(pubRequest);
         } catch(Exception e) {
-            LambdaLogger logger = context.getLogger();
-            logger.log("Publish fail: " + e.toString());
+            logger.debug("Publish fail: " + e.toString());
         }
 
         try {
