@@ -41,9 +41,10 @@ public class App implements RequestHandler<Object, Object> {
         try {
             String payload = "{ \"feed\": 1 }";
             ByteBuffer payloadBB = ByteBuffer.wrap(payload.getBytes());
-            PublishRequest pubRequest = new PublishRequest().withQos(1)
-                                                            .withTopic("cat-feeder/feed")
-                                                            .withPayload(payloadBB);
+            PublishRequest pubRequest = new PublishRequest()
+                    .withQos(1)
+                    .withTopic("cat-feeder/feed")
+                    .withPayload(payloadBB);
             iotData.publish(pubRequest);
         } catch(Exception e) {
             logger.debug("Publish fail: " + e.toString());
