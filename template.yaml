@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: CatFeeder
-      Handler: lambdas.App::handleRequest
+      Handler: com.cateeder.handlers.App::handleRequest
       Runtime: java11
       MemorySize: 512
       Events:
@@ -33,7 +33,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: CatFeeder
-      Handler: lambdas.CatEatingLambda::handleRequest
+      Handler: com.cateeder.handlers.CatEatingLambda::handleRequest
       Runtime: java11
       MemorySize: 512
       Policies: AmazonDynamoDBFullAccess

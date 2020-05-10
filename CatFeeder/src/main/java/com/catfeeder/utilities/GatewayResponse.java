@@ -1,4 +1,4 @@
-package utilities;
+package com.catfeeder.utilities;
 
 import java.util.Collections;
 import java.util.HashMap;

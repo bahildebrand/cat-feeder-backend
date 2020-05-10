@@ -1,4 +1,4 @@
-package lambdas;
+package com.catfeeder.handlers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +13,8 @@ import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utilities.GatewayResponse;
-import utilities.DBClient;
+import com.catfeeder.utilities.GatewayResponse;
+import com.catfeeder.utilities.DBClient;
 
 /**
  * Handler for requests to Lambda function.

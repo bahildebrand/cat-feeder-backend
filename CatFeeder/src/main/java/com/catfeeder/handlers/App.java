@@ -1,4 +1,4 @@
-package lambdas;
+package com.catfeeder.handlers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,7 +19,7 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utilities.GatewayResponse;
+import com.catfeeder.utilities.GatewayResponse;
 
 /**
  * Handler for requests to Lambda function.

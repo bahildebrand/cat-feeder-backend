@@ -1,10 +1,10 @@
-package lambdas;
+package com.catfeeder.handlers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
-import utilities.GatewayResponse;
+import com.catfeeder.utilities.GatewayResponse;
 
 public class AppTest {
   @Test

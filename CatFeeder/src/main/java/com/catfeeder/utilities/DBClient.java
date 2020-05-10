@@ -1,4 +1,4 @@
-package utilities;
+package com.catfeeder.utilities;
 
 import java.util.Date;
 import java.util.HashMap;
