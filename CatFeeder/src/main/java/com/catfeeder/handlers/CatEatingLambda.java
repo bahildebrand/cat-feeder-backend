@@ -33,8 +33,9 @@ public class CatEatingLambda implements RequestHandler<Map<String,String>, Objec
         DBClient client = new DBClient(System.getenv("TABLE_NAME"));
         try {
             Map<String,String> data = new HashMap<>();
-            data.put("event", "cat-fed");
-            client.putItem("cat-eating", data);
+            String eventString = event.get("event");
+            data.put("event", eventString);
+            client.putItem("cat-feeder", data);
             String output = String.format("{}");
             return new GatewayResponse(output, headers, 200);
         } catch (Exception e) {

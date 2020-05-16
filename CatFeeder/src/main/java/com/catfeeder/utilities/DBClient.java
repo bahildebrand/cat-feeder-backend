@@ -30,16 +30,18 @@ public class DBClient {
         String dateString = new Date().toString();
         Map<String, AttributeValue> item = new HashMap<>();
 
-        item.put(PRIMARY_KEY, new AttributeValue("cat-eating"));
+        item.put(PRIMARY_KEY, new AttributeValue(id));
         item.put(SORT_KEY, new AttributeValue(dateString));
 
-        for (Map.Entry<String,String> entry: data.entrySet()) {
-            item.put(entry.getKey(), new AttributeValue(entry.getValue()));
-        }
-
         PutItemRequest request = new PutItemRequest()
-            .withTableName(tableName)
-            .withItem(item);
+            .withTableName(tableName);
+        if(!data.isEmpty()) {
+            for (Map.Entry<String,String> entry: data.entrySet()) {
+                item.put(entry.getKey(), new AttributeValue(entry.getValue()));
+            }
+
+            request = request.withItem(item);
+        }
 
         try {
             client.putItem(request);
