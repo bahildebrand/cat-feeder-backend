@@ -37,7 +37,6 @@ public class App implements RequestHandler<Object, Object> {
                         "us-east-1"))
                 .build();
 
-
         try {
             String payload = "{ \"feed\": 1 }";
             ByteBuffer payloadBB = ByteBuffer.wrap(payload.getBytes());

@@ -19,20 +19,28 @@ import com.catfeeder.utilities.DBClient;
 /**
  * Handler for requests to Lambda function.
  */
-public class CatEatingLambda implements RequestHandler<Object, Object> {
+public class CatEatingLambda implements RequestHandler<Map<String,String>, Object> {
     private static final Logger logger = LoggerFactory.getLogger(
         CatEatingLambda.class);
 
-    public Object handleRequest(final Object input, final Context context) {
+    @Override
+    public Object handleRequest(Map<String,String> event, final Context context) {
         Map<String, String> headers = new HashMap<>();
+
         headers.put("Content-Type", "application/json");
         headers.put("X-Custom-Header", "application/json");
 
         DBClient client = new DBClient(System.getenv("TABLE_NAME"));
-        client.putItem("cat-eating");
-
-        String output = String.format("{ \"message\": \"hello world\" }");
-        return new GatewayResponse(output, headers, 200);
+        try {
+            Map<String,String> data = new HashMap<>();
+            data.put("event", "cat-fed");
+            client.putItem("cat-eating", data);
+            String output = String.format("{}");
+            return new GatewayResponse(output, headers, 200);
+        } catch (Exception e) {
+            logger.debug("Failed to add item" + e.toString());
+            return new GatewayResponse("{}", headers, 500);
+        }
     }
 
 }

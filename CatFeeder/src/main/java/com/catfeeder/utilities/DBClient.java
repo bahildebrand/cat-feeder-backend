@@ -26,17 +26,25 @@ public class DBClient {
         this.client = AmazonDynamoDBClientBuilder.standard().build();
     }
 
-    public void putItem(String id) {
+    public void putItem(String id, Map<String,String> data) {
         String dateString = new Date().toString();
         Map<String, AttributeValue> item = new HashMap<>();
 
         item.put(PRIMARY_KEY, new AttributeValue("cat-eating"));
         item.put(SORT_KEY, new AttributeValue(dateString));
 
+        for (Map.Entry<String,String> entry: data.entrySet()) {
+            item.put(entry.getKey(), new AttributeValue(entry.getValue()));
+        }
+
         PutItemRequest request = new PutItemRequest()
             .withTableName(tableName)
             .withItem(item);
 
-        client.putItem(request);
+        try {
+            client.putItem(request);
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

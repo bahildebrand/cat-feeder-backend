@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: CatFeeder
-      Handler: com.cateeder.handlers.App::handleRequest
+      Handler: com.catfeeder.handlers.App::handleRequest
       Runtime: java11
       MemorySize: 512
       Events:
@@ -33,7 +33,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: CatFeeder
-      Handler: com.cateeder.handlers.CatEatingLambda::handleRequest
+      Handler: com.catfeeder.handlers.CatEatingLambda::handleRequest
       Runtime: java11
       MemorySize: 512
       Policies: AmazonDynamoDBFullAccess
@@ -43,6 +43,16 @@ Resources:
           Properties:
             Path: /cat-eating
             Method: get
+  CatFeederTopicRule:
+    Type: AWS::IoT::TopicRule
+    Properties:
+      RuleName: CatFeeder
+      TopicRulePayload:
+        RuleDisabled: false
+        Sql: SELECT * FROM 'catfeeder/#'
+        Actions:
+          - Lambda:
+              FunctionArn: !GetAtt CatEatingFunction.Arn
   CatFeederTable:
     Type: AWS::DynamoDB::Table
     Properties:
