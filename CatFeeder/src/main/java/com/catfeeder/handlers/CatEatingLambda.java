@@ -34,8 +34,7 @@ public class CatEatingLambda implements RequestHandler<Map<String,String>, Objec
         try {
             Map<String,String> data = new HashMap<>();
             String eventString = event.get("event");
-            data.put("event", eventString);
-            client.putItem("cat-feeder", data);
+            client.putItem(eventString);
             String output = String.format("{}");
             return new GatewayResponse(output, headers, 200);
         } catch (Exception e) {

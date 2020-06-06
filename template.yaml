@@ -14,18 +14,18 @@ Globals:
         TABLE_NAME: !Ref CatFeederTable
 
 Resources:
-  HelloWorldFunction:
+  FeedCatRestFunction:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: CatFeeder
-      Handler: com.catfeeder.handlers.App::handleRequest
+      Handler: com.catfeeder.handlers.FeedCatRest::handleRequest
       Runtime: java11
       MemorySize: 512
       Events:
         HelloWorld:
           Type: Api
           Properties:
-            Path: /hello
+            Path: /feedcat
             Method: get
       Policies:
         - AWSIoTDataAccess
@@ -37,12 +37,6 @@ Resources:
       Runtime: java11
       MemorySize: 512
       Policies: AmazonDynamoDBFullAccess
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /cat-eating
-            Method: get
   CatFeederTopicRule:
     Type: AWS::IoT::TopicRule
     Properties:
@@ -76,18 +70,15 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
+  FeedCatRestAPI:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/feedcat/"
+  FeedCatRestFunction:
     Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
+    Value: !GetAtt FeedCatRestFunction.Arn
+  FeedCatRestFunctionIamRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
-  CatEatingApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/cat-eating/"
+    Value: !GetAtt FeedCatRestFunctionRole.Arn
   CatEatingFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt CatEatingFunction.Arn

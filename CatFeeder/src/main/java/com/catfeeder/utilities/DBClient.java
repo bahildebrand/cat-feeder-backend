@@ -9,8 +9,9 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,25 +27,17 @@ public class DBClient {
         this.client = AmazonDynamoDBClientBuilder.standard().build();
     }
 
-    public void putItem(String id, Map<String,String> data) {
+    public void putItem(String id) {
         String dateString = new Date().toString();
-        Map<String, AttributeValue> item = new HashMap<>();
 
-        item.put(PRIMARY_KEY, new AttributeValue(id));
-        item.put(SORT_KEY, new AttributeValue(dateString));
-
-        PutItemRequest request = new PutItemRequest()
-            .withTableName(tableName);
-        if(!data.isEmpty()) {
-            for (Map.Entry<String,String> entry: data.entrySet()) {
-                item.put(entry.getKey(), new AttributeValue(entry.getValue()));
-            }
-
-            request = request.withItem(item);
-        }
+        Item item = new Item()
+            .withPrimaryKey(PRIMARY_KEY, id, SORT_KEY, dateString);
+            // .withNull("event");
 
         try {
-            client.putItem(request);
+            DynamoDB dynamoDB = new DynamoDB(client);
+            Table table = dynamoDB.getTable(tableName);
+            table.putItem(item);
         } catch (Exception e) {
             throw e;
         }

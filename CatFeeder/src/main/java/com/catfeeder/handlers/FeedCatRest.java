@@ -24,8 +24,8 @@ import com.catfeeder.utilities.GatewayResponse;
 /**
  * Handler for requests to Lambda function.
  */
-public class App implements RequestHandler<Object, Object> {
-    private static final Logger logger = LoggerFactory.getLogger(App.class);
+public class FeedCatRest implements RequestHandler<Object, Object> {
+    private static final Logger logger = LoggerFactory.getLogger(FeedCatRest.class);
 
     public Object handleRequest(final Object input, final Context context) {
         Map<String, String> headers = new HashMap<>();
